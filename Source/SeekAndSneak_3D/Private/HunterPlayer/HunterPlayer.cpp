@@ -3,6 +3,8 @@
 
 #include "HunterPlayer/HunterPlayer.h"
 
+#include "PlayerState/MotionState/PlayerMove/PlayerMove.h"
+#include "PlayerState/MotionState/PlayerLook/PlayerLook.h"
 
 // Sets default values
 AHunterPlayer::AHunterPlayer()
@@ -13,6 +15,8 @@ AHunterPlayer::AHunterPlayer()
 	FPSCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	FPSCamera->SetupAttachment(GetMesh(), TEXT("head"));
 
+	MotionStateLibrary.Add(MotionEnum::OnMove, MakeUnique<PlayerMove>());
+	MotionStateLibrary.Add(MotionEnum::OnLook, MakeUnique<PlayerLook>());
 }
 
 // Called when the game starts or when spawned
@@ -31,15 +35,11 @@ void AHunterPlayer::Tick(float DeltaTime)
 
 void AHunterPlayer::MoveFunction(const FInputActionValue& InputValue)
 {
-	FVector2D MoveValue = InputValue.Get<FVector2D>();
-	AddMovementInput(GetActorForwardVector(), MoveValue.X);
-	AddMovementInput(GetActorRightVector(), MoveValue.Y);
+	MotionStateLibrary[MotionEnum::OnMove]->Begin(this, InputValue);
 }
 
 void AHunterPlayer::LookFunction(const FInputActionValue& InputValue)
 {
-	FVector2D MoveValue = InputValue.Get<FVector2D>();
-	AddControllerYawInput(MoveValue.X);
-	AddControllerPitchInput(MoveValue.Y);
+	MotionStateLibrary[MotionEnum::OnLook]->Begin(this, InputValue);
 }
 

@@ -7,6 +7,7 @@
 #include "InputActionValue.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "PlayerState/MotionState/MotionStateAbstract.h"
 #include "PropPlayer.generated.h"
 
 UCLASS()
@@ -17,6 +18,11 @@ class SEEKANDSNEAK_3D_API APropPlayer : public ACharacter
 public:
 	// Sets default values for this character's properties
 	APropPlayer();
+
+private:
+
+	//Smart Pointer For Handle The Memory Management
+	TMap<MotionEnum, TUniquePtr<MotionStateAbstract>>MotinStateLibrary;
 
 protected:
 	// Called when the game starts or when spawned
@@ -35,5 +41,6 @@ public:
 	//Movement Function
 	void MoveFunction(const FInputActionValue& InputValue);
 	void LookFunction(const FInputActionValue& InputValue);
+
 
 };

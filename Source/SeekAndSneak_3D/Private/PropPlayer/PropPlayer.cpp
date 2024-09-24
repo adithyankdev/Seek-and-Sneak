@@ -3,6 +3,9 @@
 
 #include "PropPlayer/PropPlayer.h"
 
+#include "PlayerState/MotionState/PlayerMove/PlayerMove.h"
+#include "PlayerState/MotionState/PlayerLook/PlayerLook.h"
+
 // Sets default values
 APropPlayer::APropPlayer()
 {
@@ -14,6 +17,11 @@ APropPlayer::APropPlayer()
 
 	TPSCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	TPSCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
+
+	
+	MotinStateLibrary.Add(MotionEnum::OnMove,MakeUnique<PlayerMove>());
+	MotinStateLibrary.Add(MotionEnum::OnLook, MakeUnique<PlayerLook>());
+
 
 }
 
@@ -33,23 +41,11 @@ void APropPlayer::Tick(float DeltaTime)
 
 void APropPlayer::MoveFunction(const FInputActionValue& InputValue)
 {
-	FVector2D MoveValue = InputValue.Get<FVector2D>();
-
-	FRotator Rotation = Controller->GetControlRotation();
-	FRotator YawRotation = FRotator(0, Rotation.Yaw, 0);
-
-	FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-	
-
-	AddMovementInput(ForwardDirection, MoveValue.X);
-	AddMovementInput(RightDirection, MoveValue.Y);
+	MotinStateLibrary[MotionEnum::OnMove]->Begin(this, InputValue);
 }
 
 void APropPlayer::LookFunction(const FInputActionValue& InputValue)
 {
-	FVector2D MoveValue = InputValue.Get<FVector2D>();
-	AddControllerYawInput(MoveValue.X);
-	AddControllerPitchInput(MoveValue.Y);
+	MotinStateLibrary[MotionEnum::OnLook]->Begin(this, InputValue);
 }
 

@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
 #include "InputActionValue.h"
+#include "PlayerState/MotionState/MotionStateAbstract.h"
 #include "HunterPlayer.generated.h"
 
 
@@ -17,6 +18,10 @@ class SEEKANDSNEAK_3D_API AHunterPlayer : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AHunterPlayer();
+
+private:
+
+	TMap<MotionEnum, TUniquePtr<MotionStateAbstract>>MotionStateLibrary;
 
 protected:
 	// Called when the game starts or when spawned

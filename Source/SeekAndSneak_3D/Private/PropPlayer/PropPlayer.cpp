@@ -7,8 +7,12 @@
 #include "PlayerState/MotionState/PlayerLook/PlayerLook.h"
 
 #include "PlayerState/InputState/Prop/OnPropMorph.h"
+#include "Kismet/KismetSystemLibrary.h"
 
-
+void APropPlayer::SetPlayerMesh(UStaticMesh* NewMesh)
+{
+	PlayerMesh->SetStaticMesh(NewMesh);
+}
 
 // Sets default values
 APropPlayer::APropPlayer()
@@ -22,6 +26,8 @@ APropPlayer::APropPlayer()
 	TPSCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	TPSCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 
+	PlayerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Actual Mesh"));
+	PlayerMesh->SetupAttachment(GetMesh());
 	
 	MotinStateLibrary.Add(MotionEnum::OnMove,MakeUnique<PlayerMove>());
 	MotinStateLibrary.Add(MotionEnum::OnLook,MakeUnique<PlayerLook>());
@@ -30,10 +36,7 @@ APropPlayer::APropPlayer()
 
 }
 
-UStaticMeshComponent* APropPlayer::GetPlayerMesh()
-{
-	return nullptr;
-}
+
 
 // Called when the game starts or when spawned
 void APropPlayer::BeginPlay()

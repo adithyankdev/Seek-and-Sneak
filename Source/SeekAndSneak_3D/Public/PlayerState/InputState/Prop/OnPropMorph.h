@@ -31,4 +31,11 @@ private:
 	FHitResult TraceHitResult;
 	FCollisionQueryParams TraceCollisionParams;
 
+	//Helper Function For Breaking Down The Code
+
+	/*Casting Line Trace*/
+	void CastLineTrace(ACharacter* Player);
+	/*Setting New Mesh To Player*/
+	void SetNewMesh(ACharacter* Player , FHitResult& HitResult);
+
 };

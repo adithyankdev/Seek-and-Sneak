@@ -24,7 +24,7 @@ public:
 	// Sets default values for this character's properties
 	APropPlayer();
 
-	UStaticMeshComponent* GetPlayerMesh() override;
+	void SetPlayerMesh(UStaticMesh* NewMesh) override;
 
 private:
 
@@ -43,6 +43,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCameraComponent* TPSCamera;
 
+	UPROPERTY(EditDefaultsOnly)
+	UStaticMeshComponent* PlayerMesh;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -50,7 +53,10 @@ public:
 	//Movement Function
 	void MoveFunction(const FInputActionValue& InputValue);
 	void LookFunction(const FInputActionValue& InputValue);
+
+	//Input Functions
 	void MorphObjectFunction();
+
 
 
 };

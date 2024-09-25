@@ -58,5 +58,13 @@ public:
 	void MorphObjectFunction();
 
 
+	FTimerHandle MorphCoolDownTimer;
+
+	float MorphCoolDownTime;
+
+	UPROPERTY(EditDefaultsOnly , Category = "Prop Player")
+	float MorphMaxCoolDownTime;
+
+	void UpdateMorphCoolDownTime();
 
 };

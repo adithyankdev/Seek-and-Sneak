@@ -7,6 +7,8 @@
 #include "PlayerState/MotionState/PlayerLook/PlayerLook.h"
 
 #include "PlayerState/InputState/Prop/OnPropMorph.h"
+
+#include "Runtime/Engine/Public/TimerManager.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 void APropPlayer::SetPlayerMesh(UStaticMesh* NewMesh)
@@ -37,19 +39,18 @@ APropPlayer::APropPlayer()
 }
 
 
-
 // Called when the game starts or when spawned
 void APropPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	MorphMaxCoolDownTime = 15.0f;
 }
 
 // Called every frame
 void APropPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void APropPlayer::MoveFunction(const FInputActionValue& InputValue)
@@ -64,7 +65,17 @@ void APropPlayer::LookFunction(const FInputActionValue& InputValue)
 
 void APropPlayer::MorphObjectFunction()
 {
-	InputStateLibrary[InputStateEnum::OnPropMorph]->OnBegin(this);
+	if (MorphCoolDownTime == 0)
+	{
+		InputStateLibrary[InputStateEnum::OnPropMorph]->OnBegin(this);
+		MorphCoolDownTime = MorphMaxCoolDownTime;
+		GetWorld()->GetTimerManager().SetTimer(MorphCoolDownTimer, this, &APropPlayer::UpdateMorphCoolDownTime, 1, true);
+	}
+}
 
+void APropPlayer::UpdateMorphCoolDownTime()
+{
+	MorphCoolDownTime--;
+	if (MorphCoolDownTime == 0)GetWorld()->GetTimerManager().ClearTimer(MorphCoolDownTimer);
 }
 

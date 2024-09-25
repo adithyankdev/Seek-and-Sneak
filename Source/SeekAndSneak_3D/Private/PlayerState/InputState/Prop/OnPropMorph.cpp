@@ -66,6 +66,10 @@ void OnPropMorph::SetNewMesh(ACharacter* Player, FHitResult& HitResult)
 	/*Casting To StaticMeshComponent For Retreving The Mesh*/
 	if (UStaticMeshComponent* StaticMeshComponent = Cast <UStaticMeshComponent>(HitResult.GetComponent()))
 	{
-		PlayerInterface->SetPlayerMesh(StaticMeshComponent->GetStaticMesh());
+		if (StaticMeshComponent->ComponentHasTag(""))
+		{
+			PlayerInterface->SetPlayerMesh(StaticMeshComponent->GetStaticMesh());
+		}
+		
 	}
 }

@@ -8,6 +8,8 @@
 
 #include "PlayerState/InputState/Prop/OnPropMorph.h"
 
+
+
 // Sets default values
 APropPlayer::APropPlayer()
 {
@@ -55,5 +57,11 @@ void APropPlayer::MoveFunction(const FInputActionValue& InputValue)
 void APropPlayer::LookFunction(const FInputActionValue& InputValue)
 {
 	MotinStateLibrary[MotionEnum::OnLook]->Begin(this, InputValue);
+}
+
+void APropPlayer::MorphObjectFunction()
+{
+	InputStateLibrary[InputStateEnum::OnPropMorph]->OnBegin(this);
+
 }
 

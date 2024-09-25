@@ -27,6 +27,8 @@ void APropPlayerController::BeginPlay()
 				EnhancedInput->BindAction(MoveAction, ETriggerEvent::Triggered, PropPlayer, &APropPlayer::MoveFunction);
 				EnhancedInput->BindAction(LookAction, ETriggerEvent::Triggered, PropPlayer, &APropPlayer::LookFunction);
 
+				EnhancedInput->BindAction(MorphAction, ETriggerEvent::Started, PropPlayer, &APropPlayer::MorphObjectFunction);
+
 			}
 		}
 	}

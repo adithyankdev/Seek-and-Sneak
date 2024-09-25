@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "PlayerState/InputState/InputStateAbstract.h"
+#include "Interface/Player/PropPlayerInterface.h"
 
 /**
  * 
@@ -14,6 +15,20 @@ public:
 	OnPropMorph();
 	~OnPropMorph();
 
-	void Begin(ACharacter* Player)override;
-	void End(ACharacter* Player)override;
+	void OnBegin(ACharacter* Player)override;
+	void OnEnd(ACharacter* Player)override;
+
+private:
+
+	//Caching The Interface
+	TScriptInterface<IPropPlayerInterface>PlayerInterface;
+
+	//Trace Variables
+	bool IsTraceHit;
+	float TraceRadius;
+	FVector Start;
+	FVector End;
+	FHitResult TraceHitResult;
+	FCollisionQueryParams TraceCollisionParams;
+
 };

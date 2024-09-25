@@ -50,6 +50,7 @@ public:
 	//Movement Function
 	void MoveFunction(const FInputActionValue& InputValue);
 	void LookFunction(const FInputActionValue& InputValue);
+	void MorphObjectFunction();
 
 
 };

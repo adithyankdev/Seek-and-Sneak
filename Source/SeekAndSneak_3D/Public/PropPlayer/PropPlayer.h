@@ -7,7 +7,10 @@
 #include "InputActionValue.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+
 #include "PlayerState/MotionState/MotionStateAbstract.h"
+#include "PlayerState/InputState/InputStateAbstract.h"
+
 #include "PropPlayer.generated.h"
 
 UCLASS()
@@ -22,7 +25,9 @@ public:
 private:
 
 	//Smart Pointer For Handle The Memory Management
-	TMap<MotionEnum, TUniquePtr<MotionStateAbstract>>MotinStateLibrary;
+	TMap<MotionEnum,TUniquePtr<MotionStateAbstract>>MotinStateLibrary;
+
+	TMap<InputStateEnum,TUniquePtr<InputStateAbstract>>InputStateLibrary;
 
 protected:
 	// Called when the game starts or when spawned

@@ -6,6 +6,8 @@
 #include "PlayerState/MotionState/PlayerMove/PlayerMove.h"
 #include "PlayerState/MotionState/PlayerLook/PlayerLook.h"
 
+#include "PlayerState/InputState/Prop/OnPropMorph.h"
+
 // Sets default values
 APropPlayer::APropPlayer()
 {
@@ -20,8 +22,9 @@ APropPlayer::APropPlayer()
 
 	
 	MotinStateLibrary.Add(MotionEnum::OnMove,MakeUnique<PlayerMove>());
-	MotinStateLibrary.Add(MotionEnum::OnLook, MakeUnique<PlayerLook>());
+	MotinStateLibrary.Add(MotionEnum::OnLook,MakeUnique<PlayerLook>());
 
+	InputStateLibrary.Add(InputStateEnum::OnPropMorph,MakeUnique<OnPropMorph>());
 
 }
 

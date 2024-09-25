@@ -11,16 +11,20 @@
 #include "PlayerState/MotionState/MotionStateAbstract.h"
 #include "PlayerState/InputState/InputStateAbstract.h"
 
+#include "Interface/Player/PropPlayerInterface.h"
+
 #include "PropPlayer.generated.h"
 
 UCLASS()
-class SEEKANDSNEAK_3D_API APropPlayer : public ACharacter
+class SEEKANDSNEAK_3D_API APropPlayer : public ACharacter , public IPropPlayerInterface
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
 	APropPlayer();
+
+	UStaticMeshComponent* GetPlayerMesh() override;
 
 private:
 

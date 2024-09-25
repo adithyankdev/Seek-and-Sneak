@@ -28,6 +28,11 @@ APropPlayer::APropPlayer()
 
 }
 
+UStaticMeshComponent* APropPlayer::GetPlayerMesh()
+{
+	return nullptr;
+}
+
 // Called when the game starts or when spawned
 void APropPlayer::BeginPlay()
 {

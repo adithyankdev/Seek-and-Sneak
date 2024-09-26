@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "Interface/Player/HunterPlayerInterface.h"
 #include "HunterAnimInstance.generated.h"
 
 /**
@@ -19,6 +20,9 @@ private:
 	void NativeInitializeAnimation()override;
     void NativeUpdateAnimation(float DeltaTime)override;
 
+	UPROPERTY()
+	TScriptInterface<IHunterPlayerInterface>PlayerInterface;
+
 protected:
 
 	ACharacter* OwnerCharacter;
@@ -29,6 +33,9 @@ protected:
 	float Direction;
 	UPROPERTY(BlueprintReadOnly)
 	float Pitch;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool CanPlayerRun;
 
 	FVector Velocity;
 	FRotator AimRotation;

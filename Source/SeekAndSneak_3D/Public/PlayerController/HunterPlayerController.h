@@ -27,10 +27,15 @@ protected:
 
 	//InputAction For Ground Movement --WSAD
 	UPROPERTY(EditDefaultsOnly)
-	UInputAction* MoveAction;
+	UInputAction* JogAction;
 
 	//InputAction For Look Movement --MouseXY
 	UPROPERTY(EditDefaultsOnly)
 	UInputAction* LookAction;
+
+	UPROPERTY(EditDefaultsOnly)
+	UInputAction* SprintAction;
+
+
 	
 };

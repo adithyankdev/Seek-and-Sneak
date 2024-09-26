@@ -2,11 +2,18 @@
 
 
 #include "HunterPlayer/Animation/HunterAnimInstance.h"
+#include "Interface/Player/HunterPlayerInterface.h"
 #include "GameFramework/Character.h"
 
 void UHunterAnimInstance::NativeInitializeAnimation()
 {
 	 OwnerCharacter = Cast <ACharacter>(GetOwningActor());
+     
+	 if (IHunterPlayerInterface* Interface = Cast <IHunterPlayerInterface>(OwnerCharacter))
+	 {
+		 PlayerInterface.SetObject(OwnerCharacter);
+		 PlayerInterface.SetInterface(Interface);
+	 }
 }
 
 void UHunterAnimInstance::NativeUpdateAnimation(float DeltaTime)
@@ -25,8 +32,10 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaTime)
 		}
 		else
 		{
-			Pitch = AimRotation.Pitch;
+			Pitch = AimRotation.Pitch * -1;
 		}
+
+		CanPlayerRun = PlayerInterface->CanRun();
 	}
 
 }

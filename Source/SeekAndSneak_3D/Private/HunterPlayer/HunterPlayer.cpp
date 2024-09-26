@@ -67,8 +67,11 @@ void AHunterPlayer::LookFunction(const FInputActionValue& InputValue)
 
 void AHunterPlayer::StartSprintFunction()
 {
-	if (HasAuthority())CallSprintOnMulticast(500.0f,true);
-	else CallSprintOnServer(500.0f,true);
+	if (GetVelocity().Size() != 0)
+	{
+		if (HasAuthority())CallSprintOnMulticast(500.0f, true);
+		else CallSprintOnServer(500.0f, true);
+	}
 }
 
 void AHunterPlayer::StopSprintFunction()

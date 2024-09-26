@@ -29,7 +29,7 @@ void AHunterPlayerController::BeginPlay()
 			EnhancedInput->BindAction(JogAction, ETriggerEvent::Triggered, HunterPlayer, &AHunterPlayer::PlayerJogFunction);
 			EnhancedInput->BindAction(LookAction, ETriggerEvent::Triggered, HunterPlayer, &AHunterPlayer::LookFunction);
 
-			EnhancedInput->BindAction(SprintAction, ETriggerEvent::Started, HunterPlayer, &AHunterPlayer::StartSprintFunction);
+			EnhancedInput->BindAction(SprintAction, ETriggerEvent::Triggered, HunterPlayer, &AHunterPlayer::StartSprintFunction);
 			EnhancedInput->BindAction(SprintAction, ETriggerEvent::Completed, HunterPlayer, &AHunterPlayer::StopSprintFunction);
 
 		  }

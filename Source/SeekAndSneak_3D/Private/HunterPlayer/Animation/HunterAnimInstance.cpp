@@ -18,14 +18,14 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaTime)
 		Direction = CalculateDirection(Velocity, OwnerCharacter->GetActorRotation());
 
 		AimRotation = OwnerCharacter->GetBaseAimRotation();
-		if(AimRotation.Pitch >=180)
+		if(AimRotation.Pitch >= 180)
 		{
-			Pitch = 360 - AimRotation.Pitch;
+			Pitch = (360 - AimRotation.Pitch);
 			
 		}
 		else
 		{
-			Pitch = OwnerCharacter->GetBaseAimRotation().Pitch;
+			Pitch = AimRotation.Pitch;
 		}
 	}
 

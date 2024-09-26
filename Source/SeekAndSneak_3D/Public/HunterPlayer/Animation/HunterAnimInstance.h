@@ -27,8 +27,9 @@ protected:
 	float Speed;
 	UPROPERTY(BlueprintReadOnly)
 	float Direction;
-
+	UPROPERTY(BlueprintReadOnly)
+	float Pitch;
 
 	FVector Velocity;
-	
+	FRotator AimRotation;
 };

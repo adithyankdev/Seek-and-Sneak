@@ -10,6 +10,8 @@ APropCloneActor::APropCloneActor()
 
 	ActorMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	ActorMeshComp->SetupAttachment(RootComponent);
+	
+	ActorMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 }
 

@@ -25,4 +25,5 @@ class SEEKANDSNEAK_3D_API IPropPlayerInterface
 public:
 
 	virtual void SetPlayerMesh(UStaticMesh* NewMesh) = 0;
+	virtual UStaticMesh* GetPlayerMesh() = 0;
 };

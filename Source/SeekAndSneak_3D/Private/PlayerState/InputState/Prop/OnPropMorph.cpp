@@ -18,7 +18,7 @@ OnPropMorph::~OnPropMorph()
 {
 }
 
-void OnPropMorph::OnBegin(ACharacter* Player)
+void OnPropMorph::Begin(ACharacter* Player)
 {
 	/* It Only Run Once*/
 	if (PlayerInterface == nullptr)
@@ -36,7 +36,7 @@ void OnPropMorph::OnBegin(ACharacter* Player)
 	
 }
 
-void OnPropMorph::OnEnd(ACharacter* Player)
+void OnPropMorph::End(ACharacter* Player)
 {
 	
 }
@@ -45,13 +45,13 @@ void OnPropMorph::OnEnd(ACharacter* Player)
 
 void OnPropMorph::CastLineTrace(ACharacter* Player)
 {
-	Start = Player->GetActorLocation();
+	StartPoint = Player->GetActorLocation();
 	/*Setting A Little High So Colliding With Ground Floor Avoided*/
-	Start.Z += 20.0f;
-	End = Start;
+	StartPoint.Z += 20.0f;
+	EndPoint = StartPoint;
 
-	IsTraceHit = Player->GetWorld()->SweepSingleByChannel(TraceHitResult, Start, End, FQuat::Identity, ECollisionChannel::ECC_Visibility, FCollisionShape::MakeSphere(TraceRadius), TraceCollisionParams);
-	DrawDebugSphere(Player->GetWorld(), End, TraceRadius, 12, IsTraceHit ? FColor::Red : FColor::Green, false, 5);
+	IsTraceHit = Player->GetWorld()->SweepSingleByChannel(TraceHitResult, StartPoint, EndPoint, FQuat::Identity, ECollisionChannel::ECC_Visibility, FCollisionShape::MakeSphere(TraceRadius), TraceCollisionParams);
+	DrawDebugSphere(Player->GetWorld(), EndPoint, TraceRadius, 12, IsTraceHit ? FColor::Red : FColor::Green, false, 5);
 
 	if (IsTraceHit && TraceHitResult.GetActor()->IsA(AStaticMeshActor::StaticClass()))
 	{

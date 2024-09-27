@@ -7,6 +7,7 @@
 #include "PlayerState/MotionState/PlayerLook/PlayerLook.h"
 
 #include "PlayerState/InputState/Prop/OnPropMorph.h"
+#include "PlayerState/InputState/Prop/OnPropClone.h"
 
 #include "Runtime/Engine/Public/TimerManager.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -14,6 +15,11 @@
 void APropPlayer::SetPlayerMesh(UStaticMesh* NewMesh)
 {
 	PlayerMesh->SetStaticMesh(NewMesh);
+}
+
+UStaticMesh* APropPlayer::GetPlayerMesh()
+{
+	return PlayerMesh->GetStaticMesh();
 }
 
 // Sets default values
@@ -35,6 +41,7 @@ APropPlayer::APropPlayer()
 	MotinStateLibrary.Add(MotionEnum::OnLook,MakeUnique<PlayerLook>());
 
 	InputStateLibrary.Add(InputStateEnum::OnPropMorph,MakeUnique<OnPropMorph>());
+	InputStateLibrary.Add(InputStateEnum::OnPropClone, MakeUnique<OnPropClone>());
 
 }
 
@@ -45,6 +52,7 @@ void APropPlayer::BeginPlay()
 	Super::BeginPlay();
 	
 	MorphMaxCoolDownTime = 15.0f;
+	TotalCloneCount = 5.0f;
 }
 
 // Called every frame
@@ -63,7 +71,7 @@ void APropPlayer::LookFunction(const FInputActionValue& InputValue)
 	MotinStateLibrary[MotionEnum::OnLook]->Begin(this, InputValue);
 }
 
-//-------------------------------------------------------------------------------->>>>> ( Prop Morph Function )
+//---------------------------------------------------------------------------------------------->>>>> ( Prop Morph Function )
 void APropPlayer::MorphObjectFunction()
 {
 	if (MorphCoolDownTime == 0)
@@ -88,7 +96,7 @@ void APropPlayer::MorphObject_Server_Implementation()
 
 void APropPlayer::MorphObject_Multicast_Implementation()
 {
-	InputStateLibrary[InputStateEnum::OnPropMorph]->OnBegin(this);
+	InputStateLibrary[InputStateEnum::OnPropMorph]->Begin(this);
 }
 
 void APropPlayer::UpdateMorphCoolDownTime()
@@ -96,4 +104,32 @@ void APropPlayer::UpdateMorphCoolDownTime()
 	MorphCoolDownTime--;
 	if (MorphCoolDownTime == 0)GetWorld()->GetTimerManager().ClearTimer(MorphCoolDownTimer);
 }
-//--------------------------------------------------------------------------------------->>>>>
+
+//----------------------------------------------------------------------------------------------->>>>>
+
+//----------------------------------------------------------------------------------------------->>>>> ( Prop Clone Function )
+void APropPlayer::PropCloneFunction()
+{
+	if (ClonedCount <= TotalCloneCount)
+	{
+		if (HasAuthority())
+		{
+			PropClone_Multicast();
+		}
+		else
+		{
+			PropClone_Server();
+		}
+		ClonedCount++;
+	}
+}
+
+void APropPlayer::PropClone_Server_Implementation()
+{
+	PropClone_Multicast();
+}
+void APropPlayer::PropClone_Multicast_Implementation()
+{
+	InputStateLibrary[InputStateEnum::OnPropClone]->Begin(this);
+}
+//---------------------------------------------------------------------------------------------->>>>>

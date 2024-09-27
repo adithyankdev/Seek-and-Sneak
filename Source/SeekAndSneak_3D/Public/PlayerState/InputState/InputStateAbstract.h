@@ -9,6 +9,7 @@ class ACharacter;
 enum class InputStateEnum
 {
 	OnPropMorph,
+	OnPropClone,
 };
 
 /**
@@ -20,6 +21,6 @@ public:
 	InputStateAbstract();
 	virtual ~InputStateAbstract();
 
-	virtual void OnBegin(ACharacter* Player) = 0;
-	virtual void OnEnd(ACharacter* Player) = 0;
+	virtual void Begin(ACharacter* Player) = 0;
+	virtual void End(ACharacter* Player) = 0;
 };

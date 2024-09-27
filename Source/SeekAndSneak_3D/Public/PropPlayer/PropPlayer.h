@@ -25,6 +25,7 @@ public:
 	APropPlayer();
 
 	void SetPlayerMesh(UStaticMesh* NewMesh) override;
+	UStaticMesh* GetPlayerMesh() override;
 
 private:
 
@@ -72,6 +73,20 @@ public:
 	UFUNCTION(NetMulticast,Reliable)
 	void MorphObject_Multicast();
 //------------------------------------------------------->>>>>
+
+//------------------------------------------------------->>>>> Clone PropMesh
+
+	UPROPERTY(EditDefaultsOnly)
+	float TotalCloneCount;
+	float ClonedCount;
+
+	void PropCloneFunction();
+
+	UFUNCTION(Server,Reliable)
+	void PropClone_Server();
+
+	UFUNCTION(NetMulticast,Reliable)
+	void PropClone_Multicast();
 
 
 

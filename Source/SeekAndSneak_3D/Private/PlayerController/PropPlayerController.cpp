@@ -29,6 +29,8 @@ void APropPlayerController::BeginPlay()
 
 				EnhancedInput->BindAction(MorphAction, ETriggerEvent::Started, PropPlayer, &APropPlayer::MorphObjectFunction);
 
+				EnhancedInput->BindAction(CloneAction, ETriggerEvent::Started, PropPlayer, &APropPlayer::PropCloneFunction);
+
 			}
 		}
 	}

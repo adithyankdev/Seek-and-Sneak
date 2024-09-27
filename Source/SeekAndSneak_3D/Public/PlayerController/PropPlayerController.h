@@ -33,5 +33,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	UInputAction* MorphAction;
+
+	UPROPERTY(EditDefaultsOnly)
+	UInputAction* CloneAction;
 	
 };

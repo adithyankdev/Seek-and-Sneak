@@ -15,8 +15,8 @@ public:
 	OnPropMorph();
 	~OnPropMorph();
 
-	void OnBegin(ACharacter* Player)override;
-	void OnEnd(ACharacter* Player)override;
+	void Begin(ACharacter* Player)override;
+	void End(ACharacter* Player)override;
 
 private:
 
@@ -26,8 +26,8 @@ private:
 	//Trace Variables
 	bool IsTraceHit;
 	float TraceRadius;
-	FVector Start;
-	FVector End;
+	FVector StartPoint;
+	FVector EndPoint;
 	FHitResult TraceHitResult;
 	FCollisionQueryParams TraceCollisionParams;
 

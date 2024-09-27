@@ -32,7 +32,6 @@ void OnPropMorph::OnBegin(ACharacter* Player)
 		//Since The If Only Works At Once -- Setting The Self Ignorance
 		TraceCollisionParams.AddIgnoredActor(Player);
 	}
-
 	CastLineTrace(Player);
 	
 }
@@ -60,13 +59,12 @@ void OnPropMorph::CastLineTrace(ACharacter* Player)
 	}
 }
 
-
 void OnPropMorph::SetNewMesh(ACharacter* Player, FHitResult& HitResult)
 {
 	/*Casting To StaticMeshComponent For Retreving The Mesh*/
 	if (UStaticMeshComponent* StaticMeshComponent = Cast <UStaticMeshComponent>(HitResult.GetComponent()))
 	{
-		if (StaticMeshComponent->ComponentHasTag(""))
+		if (StaticMeshComponent->ComponentHasTag("Sample"))
 		{
 			PlayerInterface->SetPlayerMesh(StaticMeshComponent->GetStaticMesh());
 		}

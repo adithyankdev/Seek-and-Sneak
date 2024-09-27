@@ -63,14 +63,32 @@ void APropPlayer::LookFunction(const FInputActionValue& InputValue)
 	MotinStateLibrary[MotionEnum::OnLook]->Begin(this, InputValue);
 }
 
+//-------------------------------------------------------------------------------->>>>> ( Prop Morph Function )
 void APropPlayer::MorphObjectFunction()
 {
 	if (MorphCoolDownTime == 0)
 	{
-		InputStateLibrary[InputStateEnum::OnPropMorph]->OnBegin(this);
+		if (HasAuthority())
+		{
+			MorphObject_Multicast();
+		}
+		else
+		{
+			MorphObject_Server();
+		}
 		MorphCoolDownTime = MorphMaxCoolDownTime;
 		GetWorld()->GetTimerManager().SetTimer(MorphCoolDownTimer, this, &APropPlayer::UpdateMorphCoolDownTime, 1, true);
 	}
+}
+
+void APropPlayer::MorphObject_Server_Implementation()
+{
+	MorphObject_Multicast();
+}
+
+void APropPlayer::MorphObject_Multicast_Implementation()
+{
+	InputStateLibrary[InputStateEnum::OnPropMorph]->OnBegin(this);
 }
 
 void APropPlayer::UpdateMorphCoolDownTime()
@@ -78,4 +96,4 @@ void APropPlayer::UpdateMorphCoolDownTime()
 	MorphCoolDownTime--;
 	if (MorphCoolDownTime == 0)GetWorld()->GetTimerManager().ClearTimer(MorphCoolDownTimer);
 }
-
+//--------------------------------------------------------------------------------------->>>>>

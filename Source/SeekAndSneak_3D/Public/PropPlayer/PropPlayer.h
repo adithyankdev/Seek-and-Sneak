@@ -54,17 +54,25 @@ public:
 	void MoveFunction(const FInputActionValue& InputValue);
 	void LookFunction(const FInputActionValue& InputValue);
 
-	//Input Functions
-	void MorphObjectFunction();
 
-
+//------------------------------------------------------>>>>> PropMorph 
 	FTimerHandle MorphCoolDownTimer;
 
 	float MorphCoolDownTime;
 
-	UPROPERTY(EditDefaultsOnly , Category = "Prop Player")
+	UPROPERTY(EditDefaultsOnly, Category = "Prop Player")
 	float MorphMaxCoolDownTime;
 
-	void UpdateMorphCoolDownTime();
+	void MorphObjectFunction();
+	void UpdateMorphCoolDownTime();     /*For Counting The CoolDown Timer*/
+
+	UFUNCTION(Server,Reliable)
+	void MorphObject_Server();
+
+	UFUNCTION(NetMulticast,Reliable)
+	void MorphObject_Multicast();
+//------------------------------------------------------->>>>>
+
+
 
 };

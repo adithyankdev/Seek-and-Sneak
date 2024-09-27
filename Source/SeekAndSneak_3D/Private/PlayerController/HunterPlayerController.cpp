@@ -32,6 +32,9 @@ void AHunterPlayerController::BeginPlay()
 			EnhancedInput->BindAction(SprintAction, ETriggerEvent::Triggered, HunterPlayer, &AHunterPlayer::StartSprintFunction);
 			EnhancedInput->BindAction(SprintAction, ETriggerEvent::Completed, HunterPlayer, &AHunterPlayer::StopSprintFunction);
 
+			EnhancedInput->BindAction(FireWeaponAction, ETriggerEvent::Started, HunterPlayer, &AHunterPlayer::StartFiringWeapon);
+			EnhancedInput->BindAction(FireWeaponAction, ETriggerEvent::Completed, HunterPlayer, &AHunterPlayer::StopFiringWeapon);
+
 		  }
 	   }
 	}

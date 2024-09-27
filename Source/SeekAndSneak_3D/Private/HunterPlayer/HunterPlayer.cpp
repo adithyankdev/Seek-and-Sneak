@@ -10,11 +10,28 @@
 #include "PlayerState/MotionState/PlayerMove/PlayerMove.h"
 #include "PlayerState/MotionState/PlayerLook/PlayerLook.h"
 
+#include "PlayerState/InputState/Hunter/OnPlayerFire.h"
+
+#include "Runtime/Engine/Public/TimerManager.h"
+
 #include "Kismet/KismetSystemLibrary.h"
+
+#include "GameFramework/PlayerController.h"
 
 bool AHunterPlayer::CanRun()
 {
 	return IsPlayerRunning;
+}
+
+USkeletalMeshComponent* AHunterPlayer::GetWeaponMeshComp()
+{
+	return nullptr;
+}
+
+void AHunterPlayer::SetFireWeaponLoc(FVector& StartPoint, FVector& ControlFrowardVector)
+{
+	StartPoint = FPSCamera->GetComponentLocation();
+	ControlFrowardVector = GetControlRotation().Vector();
 }
 
 void AHunterPlayer::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -37,6 +54,11 @@ AHunterPlayer::AHunterPlayer()
 
 	MotionStateLibrary.Add(MotionEnum::OnMove, MakeUnique<PlayerMove>());
 	MotionStateLibrary.Add(MotionEnum::OnLook, MakeUnique<PlayerLook>());
+
+	InputStateLibrary.Add(InputStateEnum::OnHunterFire, MakeUnique<OnPlayerFire>());
+
+	MaxBulletCount = 30;
+	WeaponBulletCount = MaxBulletCount;
 }
 
 
@@ -65,29 +87,85 @@ void AHunterPlayer::LookFunction(const FInputActionValue& InputValue)
 	MotionStateLibrary[MotionEnum::OnLook]->Begin(this, InputValue);
 }
 
+//---------------------------------------------------------------------------------------->>>>>> ( Sprint Function )
 void AHunterPlayer::StartSprintFunction()
 {
 	if (GetVelocity().Size() != 0)
 	{
-		if (HasAuthority())CallSprintOnMulticast(500.0f, true);
-		else CallSprintOnServer(500.0f, true);
+		if (HasAuthority())Sprint_OnMulticast(500.0f, true);
+		else Sprint_OnServer(500.0f, true);
 	}
 }
 
 void AHunterPlayer::StopSprintFunction()
 {
-	if (HasAuthority())CallSprintOnMulticast(250.0f, false);
-	else CallSprintOnServer(200.0f, false);
+	if (HasAuthority())Sprint_OnMulticast(250.0f, false);
+	else Sprint_OnServer(200.0f, false);
 }
 
-void AHunterPlayer::CallSprintOnServer_Implementation(float WalkSpeed,bool CanSprint)
+void AHunterPlayer::Sprint_OnServer_Implementation(float WalkSpeed,bool CanSprint)         /*Server*/
 {
-	CallSprintOnMulticast(WalkSpeed, CanSprint);
+	Sprint_OnMulticast(WalkSpeed, CanSprint);
 }
 
-void AHunterPlayer::CallSprintOnMulticast_Implementation(float WalkSpeed,bool CanSprint)
+void AHunterPlayer::Sprint_OnMulticast_Implementation(float WalkSpeed,bool CanSprint)      /*Multicast*/
 {
 	IsPlayerRunning = CanSprint;
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
+//------------------------------------------------------------------------------------------>>>>>
 
+
+//------------------------------------------------------------------------------------------>>>>> ( Firing Weapon )
+void AHunterPlayer::StartFiringWeapon()
+{
+	if (WeaponBulletCount > 0)
+	{
+		//GetWorldTimerManager().SetTimer(FireWeaponTimer, this, &AHunterPlayer::FiringWeapon, 0.5, true);
+		if (HasAuthority())
+		{
+			FireWeapon_OnMulticast(true);
+		}
+		else
+		{
+			FireWeapon_OnServer(true);
+		}
+		WeaponBulletCount--;
+	}
+}
+
+void AHunterPlayer::FiringWeapon()
+{
+	if (HasAuthority())
+	{
+		FireWeapon_OnMulticast(true);
+	}
+	else
+	{
+		FireWeapon_OnServer(true);
+	}
+	
+}
+
+void AHunterPlayer::StopFiringWeapon()
+{
+	//GetWorldTimerManager().ClearTimer(FireWeaponTimer);
+	if (HasAuthority())
+	{
+		FireWeapon_OnMulticast(false);
+	}
+	else
+	{
+		FireWeapon_OnServer(false);
+	}
+	
+}
+void AHunterPlayer::FireWeapon_OnServer_Implementation(bool Firing)
+{
+	FireWeapon_OnMulticast(Firing);
+}
+void AHunterPlayer::FireWeapon_OnMulticast_Implementation(bool Firing)
+{	
+	if (Firing) InputStateLibrary[InputStateEnum::OnHunterFire]->Begin(this);
+	else InputStateLibrary[InputStateEnum::OnHunterFire]->End(this);
+}

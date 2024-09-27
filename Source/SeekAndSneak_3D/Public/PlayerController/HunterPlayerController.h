@@ -36,6 +36,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	UInputAction* SprintAction;
 
+	UPROPERTY(EditDefaultsOnly)
+	UInputAction* FireWeaponAction;
+
 
 	
 };

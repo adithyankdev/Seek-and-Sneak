@@ -9,6 +9,8 @@ class ACharacter;
 enum class InputStateEnum
 {
 	OnPropMorph,
+
+	OnHunterFire,
 };
 
 /**

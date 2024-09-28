@@ -31,7 +31,7 @@ USkeletalMeshComponent* AHunterPlayer::GetWeaponMeshComp()
 void AHunterPlayer::SetFireWeaponLoc(FVector& StartPoint, FVector& ControlFrowardVector)
 {
 	StartPoint = FPSCamera->GetComponentLocation();
-	ControlFrowardVector = GetControlRotation().Vector();
+	ControlFrowardVector = FPSCamera->GetComponentRotation().Vector();
 }
 
 void AHunterPlayer::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

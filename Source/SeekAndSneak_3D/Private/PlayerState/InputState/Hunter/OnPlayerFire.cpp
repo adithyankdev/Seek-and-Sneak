@@ -21,7 +21,7 @@ OnPlayerFire::~OnPlayerFire()
 
 void OnPlayerFire::Begin(ACharacter* Player)
 {
-	if (WeaponMeshComp)
+	if (PlayerInterface == nullptr)
 	{
 		//Call At Once , So Using This For Store Other Datas
 		if (IHunterPlayerInterface* Interface = Cast <IHunterPlayerInterface>(Player))
@@ -46,7 +46,7 @@ void OnPlayerFire::End(ACharacter* Player)
 //Contain Fire Weapon Logic
 void OnPlayerFire::WeaponFiring(ACharacter* Player)
 {
-	PlayerInterface->SetFireWeaponLoc(StartPoint, ForwardVector);  //Passing Value By On Ref 
+	if(PlayerInterface)PlayerInterface->SetFireWeaponLoc(StartPoint, ForwardVector);  //Passing Value By On Ref 
 	//Since EndPoint Return  Only Controller Forward Vector
 	EndPoint = StartPoint + (ForwardVector * ShootingRange);
 
@@ -57,8 +57,6 @@ void OnPlayerFire::WeaponFiring(ACharacter* Player)
 
 	//DrawDebugLine(Player->GetWorld(), StartPoint, EndPoint, FColor::Green);
 	DrawDebugCylinder(Player->GetWorld(), StartPoint, EndPoint, 10, 12, FColor::Green, false, 1.0f);
-	
-	UKismetSystemLibrary::PrintString(Player->GetWorld(), TEXT("Fired"), true, true, FLinearColor::Green);
 
 	//Niagara Hit Effect Need To Add
 }

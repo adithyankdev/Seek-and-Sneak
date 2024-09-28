@@ -52,6 +52,9 @@ AHunterPlayer::AHunterPlayer()
 	FPSCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	FPSCamera->SetupAttachment(GetMesh(), TEXT("head"));
 
+	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SKMesh"));
+	WeaponMesh->SetupAttachment(GetMesh(), TEXT("WeaponHoldPosition"));
+
 	MotionStateLibrary.Add(MotionEnum::OnMove, MakeUnique<PlayerMove>());
 	MotionStateLibrary.Add(MotionEnum::OnLook, MakeUnique<PlayerLook>());
 

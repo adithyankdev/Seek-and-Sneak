@@ -49,6 +49,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCameraComponent* FPSCamera;
 
+	UPROPERTY(EditDefaultsOnly)
+	USkeletalMeshComponent* WeaponMesh;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

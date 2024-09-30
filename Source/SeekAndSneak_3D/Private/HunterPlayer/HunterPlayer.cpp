@@ -12,6 +12,7 @@
 
 #include "PlayerState/InputState/Hunter/OnPlayerFire.h"
 
+#include "Interface/Feature/Hunter/PropProximityInterface.h"
 #include "Runtime/Engine/Public/TimerManager.h"
 
 #include "Kismet/KismetSystemLibrary.h"
@@ -65,11 +66,17 @@ AHunterPlayer::AHunterPlayer()
 }
 
 
-
 // Called when the game starts or when spawned
 void AHunterPlayer::BeginPlay()
 {
 	Super::BeginPlay();
+
+	PropProximity = NewObject<UPropProximityNotifier>();
+
+	if (IsLocallyControlled())
+	{
+		StartPropProximity();
+	}
 	
 }
 
@@ -78,6 +85,14 @@ void AHunterPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AHunterPlayer::StartPropProximity()
+{
+	if (IPropProximityInterface* Interface = Cast<IPropProximityInterface>(PropProximity))
+	{
+		Interface->Start(this);
+	}
 }
 
 void AHunterPlayer::PlayerJogFunction(const FInputActionValue& InputValue)
@@ -124,7 +139,6 @@ void AHunterPlayer::StartFiringWeapon()
 {
 	if (WeaponBulletCount > 0)
 	{
-		//GetWorldTimerManager().SetTimer(FireWeaponTimer, this, &AHunterPlayer::FiringWeapon, 0.5, true);
 		if (HasAuthority())
 		{
 			FireWeapon_OnMulticast(true);
@@ -137,22 +151,9 @@ void AHunterPlayer::StartFiringWeapon()
 	}
 }
 
-void AHunterPlayer::FiringWeapon()
-{
-	if (HasAuthority())
-	{
-		FireWeapon_OnMulticast(true);
-	}
-	else
-	{
-		FireWeapon_OnServer(true);
-	}
-	
-}
 
 void AHunterPlayer::StopFiringWeapon()
 {
-	//GetWorldTimerManager().ClearTimer(FireWeaponTimer);
 	if (HasAuthority())
 	{
 		FireWeapon_OnMulticast(false);

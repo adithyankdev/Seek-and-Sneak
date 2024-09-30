@@ -10,6 +10,8 @@
 #include "PlayerState/MotionState/MotionStateAbstract.h"
 #include "PlayerState/InputState/InputStateAbstract.h"
 
+#include "Feature/Hunter/PropProximity/PropProximityNotifier.h"
+
 #include "Interface/Player/HunterPlayerInterface.h"
 #include "HunterPlayer.generated.h"
 
@@ -36,6 +38,9 @@ private:
 
 	TMap<InputStateEnum, TUniquePtr<InputStateAbstract>>InputStateLibrary;
 
+	UPROPERTY()
+	UPropProximityNotifier* PropProximity;
+
 	UPROPERTY(Replicated);
 	bool IsPlayerRunning;
 
@@ -56,11 +61,15 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	//Trigger The Proximity
+	void StartPropProximity();
+
 	//Movement Function
 	void PlayerJogFunction(const FInputActionValue& InputValue);
 	void LookFunction(const FInputActionValue& InputValue);
 
-//--------------------------------->>>>> Sprint Function
+
+//----------------------------------------------------------------------->>>>> Sprint Function
 	void StartSprintFunction();
 	void StopSprintFunction();
 
@@ -69,14 +78,13 @@ public:
 
 	UFUNCTION(NetMulticast,Reliable)
 	void Sprint_OnMulticast(float WalkSpeed,bool CanSprint);
-//-------------------------------->>>>> Sprint Function
+//----------------------------------------------------------------------->>>>> Sprint Function
 
-//-------------------------------->>>>> Weapon Fire Function
 
+//----------------------------------------------------------------------->>>>> Weapon Fire Function
 	FTimerHandle FireWeaponTimer;
 
 	void StartFiringWeapon();
-	void FiringWeapon();
 	void StopFiringWeapon();
 
 	UFUNCTION(Server,Reliable)
@@ -84,5 +92,5 @@ public:
  
 	UFUNCTION(NetMulticast,Reliable)
 	void FireWeapon_OnMulticast(bool Firing);
-
+//----------------------------------------------------------------------->>>>> Weapon Fire Function
 };

@@ -14,7 +14,11 @@ void UPropProximityNotifier::Start(ACharacter* Player)
 	GetPlayer = Player;
 
 	//Setting Up The Initial Value
-	Radius = 1200.0f;
+	Tolarance = 2.0f;
+	Hot = 940.0f;
+	Warm = 385.0f;
+
+	Radius = 3000.0f;
 	TraceParams.AddIgnoredActor(Player);
 
 	FTimerHandle ProximityTimer;
@@ -32,9 +36,21 @@ void UPropProximityNotifier::CheckProximity()
 
 	if (bIsHit && HitResult.GetActor()->IsA(APropPlayer::StaticClass()))
 	{
-		float D = FVector::Dist(StartPoint, HitResult.ImpactPoint);
-		UKismetSystemLibrary::PrintString(GetPlayer->GetWorld(),FString::Printf(TEXT("%f"),D),true,true,FLinearColor::Yellow,2);
+		float Distance = FVector::Dist(StartPoint, HitResult.ImpactPoint);
+		if (Distance >= Hot + Tolarance)
+		{
+			UKismetSystemLibrary::PrintString(GetPlayer->GetWorld(),TEXT("Hot"), true, true, FLinearColor::Red, 2);
+		}
+		else if (Distance >= Warm + Tolarance)
+		{
+			UKismetSystemLibrary::PrintString(GetPlayer->GetWorld(), TEXT("Warm"), true, true, FLinearColor::Yellow, 2);
+		}
+		else
+		{
+			UKismetSystemLibrary::PrintString(GetPlayer->GetWorld(), TEXT("COLD"), true, true, FLinearColor::Blue, 2);
+		}
+		UKismetSystemLibrary::PrintString(GetPlayer->GetWorld(),FString::Printf(TEXT("%f"),Distance),true,true,FLinearColor::Yellow,2);
 	}
 	//For Debugging
-	DrawDebugSphere(GetPlayer->GetWorld(),EndPoint, Radius, 1, FColor::Green, false, 3);
+	DrawDebugSphere(GetPlayer->GetWorld(),EndPoint, Radius, 1, FColor::Red, false, 3);
 }

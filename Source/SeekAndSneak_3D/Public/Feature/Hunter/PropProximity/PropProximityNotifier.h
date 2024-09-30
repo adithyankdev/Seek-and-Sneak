@@ -21,6 +21,14 @@ public:
 
 private:
 
+	float Hot;
+	float Warm;
+	float Cool;
+	float Cold;
+	float Tolarance;
+
+
+
 	ACharacter* GetPlayer;
 
 	void CheckProximity();
@@ -32,5 +40,7 @@ private:
 	FVector StartPoint;
 	FVector EndPoint;
 	FCollisionQueryParams TraceParams;
+
+
 
 };

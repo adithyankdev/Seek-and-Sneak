@@ -51,6 +51,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	APlayerController* PlayerController;
+	
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCameraComponent* FPSCamera;
 

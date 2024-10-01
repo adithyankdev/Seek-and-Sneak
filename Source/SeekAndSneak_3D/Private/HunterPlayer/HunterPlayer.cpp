@@ -17,7 +17,7 @@
 
 #include "Kismet/KismetSystemLibrary.h"
 
-#include "GameFramework/PlayerController.h"
+#include "PlayerController/HunterPlayerController.h"
 
 bool AHunterPlayer::CanRun()
 {
@@ -26,7 +26,7 @@ bool AHunterPlayer::CanRun()
 
 USkeletalMeshComponent* AHunterPlayer::GetWeaponMeshComp()
 {
-	return nullptr;
+	return WeaponMesh;
 }
 
 void AHunterPlayer::SetFireWeaponLoc(FVector& StartPoint, FVector& ControlFrowardVector)
@@ -82,7 +82,12 @@ void AHunterPlayer::BeginPlay()
 	{
 		StartPropProximity();
 	}
-	
+	PlayerController = Cast <AHunterPlayerController>(GetController());
+
+	if (PlayerController)
+	{
+		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("GoodToGo"));
+	}
 }
 
 // Called every frame

@@ -3,7 +3,7 @@
 
 #include "PlayerState/InputState/Hunter/OnPlayerFire.h"
 #include "GameFramework/Character.h"
-
+#include "Kismet/GameplayStatics.h"
 
 #include "Runtime/Engine/Public/TimerManager.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -11,12 +11,17 @@
 
 OnPlayerFire::OnPlayerFire()
 {
-	ShootingRange = 700.0f;
-	FireIntervalTime = 0.2f;
+
+	FireAnimation = LoadObject<UAnimSequence>(nullptr, TEXT("/Game/Asset/Weapons/Rifle/Animations/RifileFireAnimation.RifileFireAnimation"));
+	WeaponBulletHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/Asset/Weapons/Rifle/Vfx/RifileShotImpact.RifileShotImpact"));
+
+	ShootingRange = 2000.0f;
+	FireIntervalTime = 0.15f;
 }
 
 OnPlayerFire::~OnPlayerFire()
 {
+
 }
 
 void OnPlayerFire::Begin(ACharacter* Player)
@@ -50,13 +55,17 @@ void OnPlayerFire::WeaponFiring(ACharacter* Player)
 	//Since EndPoint Return  Only Controller Forward Vector
 	EndPoint = StartPoint + (ForwardVector * ShootingRange);
 
-	/*Weapon Animation Need To Be Added*/
-	//WeaponMeshComp->PlayAnimation()
+	/*Weapon Animation Added*/
+	if(FireAnimation)WeaponMeshComp->PlayAnimation(FireAnimation, false);
 
-	Player->GetWorld()->LineTraceSingleByChannel(HitResult, StartPoint, EndPoint, ECC_Visibility, TraceCollision);
+	IsHit = Player->GetWorld()->LineTraceSingleByChannel(HitResult, StartPoint, EndPoint, ECC_Visibility, TraceCollision);
 
-	//DrawDebugLine(Player->GetWorld(), StartPoint, EndPoint, FColor::Green);
-	DrawDebugCylinder(Player->GetWorld(), StartPoint, EndPoint, 10, 12, FColor::Green, false, 1.0f);
+	if (IsHit)
+	{
+		ParticleTransform.SetLocation(HitResult.ImpactPoint);
+		UGameplayStatics::SpawnEmitterAtLocation(Player->GetWorld(), WeaponBulletHitParticle, ParticleTransform, true, EPSCPoolMethod::AutoRelease);
+	}
 
+	DrawDebugLine(Player->GetWorld(), StartPoint, EndPoint, FColor::Red,false,3);
 	//Niagara Hit Effect Need To Add
 }

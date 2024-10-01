@@ -6,8 +6,6 @@
 #include "PropPlayer/PropPlayer.h"
 #include "Runtime/Engine/Public/TimerManager.h"
 
-#include "DrawDebugHelpers.h"
-#include "Kismet/KismetSystemLibrary.h"
 
 
 void UPropProximityNotifier::Start(ACharacter* Player)
@@ -39,8 +37,6 @@ void UPropProximityNotifier::CheckProximity()
 	//Only Executing If The Player Is Changed The Proximity Zone Area -- Avoiding Unecessary Calls
 	if (bProximityChangeOccur)ProximityNotifierDelegate.ExecuteIfBound(CurrentRange);
 
-	//For Debugging 
-	DrawDebugSphere(GetPlayer->GetWorld(),EndPoint, Radius, 1, FColor::Red, false, 3);
 }
 
 //---------Helper Function-------------

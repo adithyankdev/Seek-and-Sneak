@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "PlayerState/InputState/InputStateAbstract.h"
+#include "Particles/ParticleSystem.h"
 #include "Interface/Player/HunterPlayerInterface.h"
 
 /**
@@ -33,7 +34,13 @@ private:
 	//Timer For Firing Weapon
 	FTimerHandle FireWeaponTimer;
 
+	UAnimSequence* FireAnimation;
+
+	FTransform ParticleTransform;
+	UParticleSystem* WeaponBulletHitParticle;
+
 	//LineTrace Variables
+	bool IsHit;
 	FHitResult HitResult;
 	FVector ForwardVector;
 	FVector StartPoint;

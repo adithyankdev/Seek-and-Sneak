@@ -35,6 +35,11 @@ void AHunterPlayer::SetFireWeaponLoc(FVector& StartPoint, FVector& ControlFrowar
 	ControlFrowardVector = FPSCamera->GetComponentRotation().Vector();
 }
 
+UPropProximityNotifier* AHunterPlayer::GetPropProximityInstance()
+{
+	return PropProximity;
+}
+
 void AHunterPlayer::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);

@@ -29,7 +29,7 @@ public:
 	bool CanRun()override;
 	USkeletalMeshComponent* GetWeaponMeshComp() override;
 	void SetFireWeaponLoc(FVector& StartPoint, FVector& ControlFrowardVector) override;
-
+	UPropProximityNotifier* GetPropProximityInstance() override;
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifeTimeProps)const override;
 
 private:

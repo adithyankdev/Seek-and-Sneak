@@ -9,20 +9,14 @@
 #include "DrawDebugHelpers.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+
 void UPropProximityNotifier::Start(ACharacter* Player)
 {
 	GetPlayer = Player;
-
-	//Setting Up The Initial Value
-	Tolarance = 2.0f;
-	Hot = 940.0f;
-	Warm = 385.0f;
-
-	Radius = 3000.0f;
 	TraceParams.AddIgnoredActor(Player);
 
 	FTimerHandle ProximityTimer;
-	Player->GetWorld()->GetTimerManager().SetTimer(ProximityTimer, this, &UPropProximityNotifier::CheckProximity, 4,true);
+	Player->GetWorld()->GetTimerManager().SetTimer(ProximityTimer, this, &UPropProximityNotifier::CheckProximity, 1,true);
 }
 
 void UPropProximityNotifier::CheckProximity()
@@ -36,21 +30,44 @@ void UPropProximityNotifier::CheckProximity()
 
 	if (bIsHit && HitResult.GetActor()->IsA(APropPlayer::StaticClass()))
 	{
-		float Distance = FVector::Dist(StartPoint, HitResult.ImpactPoint);
-		if (Distance >= Hot + Tolarance)
-		{
-			UKismetSystemLibrary::PrintString(GetPlayer->GetWorld(),TEXT("Hot"), true, true, FLinearColor::Red, 2);
-		}
-		else if (Distance >= Warm + Tolarance)
-		{
-			UKismetSystemLibrary::PrintString(GetPlayer->GetWorld(), TEXT("Warm"), true, true, FLinearColor::Yellow, 2);
-		}
-		else
-		{
-			UKismetSystemLibrary::PrintString(GetPlayer->GetWorld(), TEXT("COLD"), true, true, FLinearColor::Blue, 2);
-		}
-		UKismetSystemLibrary::PrintString(GetPlayer->GetWorld(),FString::Printf(TEXT("%f"),Distance),true,true,FLinearColor::Yellow,2);
+		bProximityChangeOccur = DoesProximityNeedToUpdate(FVector::Dist(StartPoint, HitResult.GetActor()->GetActorLocation()));
 	}
-	//For Debugging
+	else
+	{
+		bProximityChangeOccur =  DoesProximityNeedToUpdate(-1);
+	}
+	//Only Executing If The Player Is Changed The Proximity Zone Area -- Avoiding Unecessary Calls
+	if (bProximityChangeOccur)ProximityNotifierDelegate.ExecuteIfBound(CurrentRange);
+
+	//For Debugging 
 	DrawDebugSphere(GetPlayer->GetWorld(),EndPoint, Radius, 1, FColor::Red, false, 3);
 }
+
+//---------Helper Function-------------
+
+bool UPropProximityNotifier::DoesProximityNeedToUpdate(double Distance)
+{
+	if (Distance == -1)
+	{
+		if (CurrentRange != EProximityRange::Cold)CurrentRange = EProximityRange::Cold; return true;
+	}
+
+	else if (Distance <= Hot + Tolarance)
+	{
+		if (CurrentRange != EProximityRange::Hot)CurrentRange = EProximityRange::Hot; return true;
+	}
+
+	else if (Distance <= Warm + Tolarance)
+	{
+		if (CurrentRange != EProximityRange::Warm)CurrentRange = EProximityRange::Warm; return true;
+	}
+
+	else
+	{
+		if (CurrentRange != EProximityRange::Cool)CurrentRange = EProximityRange::Cool; return true;
+	}
+
+	return false;
+}
+
+

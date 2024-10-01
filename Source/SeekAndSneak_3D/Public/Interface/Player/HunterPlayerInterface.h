@@ -6,6 +6,9 @@
 #include "UObject/Interface.h"
 #include "HunterPlayerInterface.generated.h"
 
+
+class UPropProximityNotifier;
+
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
 class UHunterPlayerInterface : public UInterface
@@ -26,4 +29,7 @@ public:
 	virtual bool CanRun() = 0;
 	virtual USkeletalMeshComponent* GetWeaponMeshComp() = 0;
 	virtual void SetFireWeaponLoc(FVector& StartPoint, FVector& ControlFrowardVector) = 0 ;
+
+	virtual UPropProximityNotifier* GetPropProximityInstance() = 0;
+
 };

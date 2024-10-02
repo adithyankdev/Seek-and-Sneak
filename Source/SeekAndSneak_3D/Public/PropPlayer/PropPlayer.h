@@ -24,7 +24,7 @@ public:
 	// Sets default values for this character's properties
 	APropPlayer();
 
-	void SetPlayerMesh(UStaticMesh* NewMesh) override;
+	void SetPlayerMesh(UStaticMesh* NewMesh) override; 
 	UStaticMesh* GetPlayerMesh() override;
 
 private:
@@ -54,6 +54,8 @@ public:
 	//Movement Function
 	void MoveFunction(const FInputActionValue& InputValue);
 	void LookFunction(const FInputActionValue& InputValue);
+	void StartJumpFunction();
+	void StopJumpFunction();
 
 
 //------------------------------------------------------>>>>> PropMorph 

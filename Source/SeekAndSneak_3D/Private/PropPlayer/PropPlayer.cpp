@@ -17,6 +17,7 @@ void APropPlayer::SetPlayerMesh(UStaticMesh* NewMesh)
 	PlayerMesh->SetStaticMesh(NewMesh);
 }
 
+
 UStaticMesh* APropPlayer::GetPlayerMesh()
 {
 	return PlayerMesh->GetStaticMesh();
@@ -71,6 +72,18 @@ void APropPlayer::LookFunction(const FInputActionValue& InputValue)
 	MotinStateLibrary[MotionEnum::OnLook]->Begin(this, InputValue);
 }
 
+void APropPlayer::StartJumpFunction()
+{
+	Jump();
+}
+
+void APropPlayer::StopJumpFunction()
+{
+	StopJumping();
+}
+
+
+
 //---------------------------------------------------------------------------------------------->>>>> ( Prop Morph Function )
 void APropPlayer::MorphObjectFunction()
 {
@@ -85,6 +98,7 @@ void APropPlayer::MorphObjectFunction()
 			MorphObject_Server();
 		}
 		MorphCoolDownTime = MorphMaxCoolDownTime;
+		ClonedCount = 0;
 		GetWorld()->GetTimerManager().SetTimer(MorphCoolDownTimer, this, &APropPlayer::UpdateMorphCoolDownTime, 1, true);
 	}
 }

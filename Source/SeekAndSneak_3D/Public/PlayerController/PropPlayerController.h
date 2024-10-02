@@ -32,6 +32,9 @@ protected:
 	UInputAction* LookAction;
 
 	UPROPERTY(EditDefaultsOnly)
+	UInputAction* JumpAction;
+
+	UPROPERTY(EditDefaultsOnly)
 	UInputAction* MorphAction;
 
 	UPROPERTY(EditDefaultsOnly)

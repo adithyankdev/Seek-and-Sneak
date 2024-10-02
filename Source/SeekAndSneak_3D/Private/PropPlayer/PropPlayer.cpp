@@ -110,7 +110,7 @@ void APropPlayer::UpdateMorphCoolDownTime()
 //----------------------------------------------------------------------------------------------->>>>> ( Prop Clone Function )
 void APropPlayer::PropCloneFunction()
 {
-	if (ClonedCount <= TotalCloneCount)
+	if (ClonedCount < TotalCloneCount)
 	{
 		if (HasAuthority())
 		{

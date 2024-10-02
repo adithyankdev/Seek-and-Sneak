@@ -31,5 +31,7 @@ private:
 	//Clone Actor 
 	APropCloneActor* ClonedActor;
 
+	FVector Location;
+
 	FTransform SpawnTransform;
 };

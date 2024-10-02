@@ -11,7 +11,7 @@
 
 OnPropMorph::OnPropMorph()
 {
-	TraceRadius = 50.0f;
+	TraceRadius = 150.0f;
 }
 
 OnPropMorph::~OnPropMorph()
@@ -31,6 +31,7 @@ void OnPropMorph::Begin(ACharacter* Player)
 		}
 		//Since The If Only Works At Once -- Setting The Self Ignorance
 		TraceCollisionParams.AddIgnoredActor(Player);
+		
 	}
 	CastLineTrace(Player);
 	
@@ -47,7 +48,7 @@ void OnPropMorph::CastLineTrace(ACharacter* Player)
 {
 	StartPoint = Player->GetActorLocation();
 	/*Setting A Little High So Colliding With Ground Floor Avoided*/
-	StartPoint.Z += 20.0f;
+	//StartPoint.Z += 20.0f;
 	EndPoint = StartPoint;
 
 	IsTraceHit = Player->GetWorld()->SweepSingleByChannel(TraceHitResult, StartPoint, EndPoint, FQuat::Identity, ECollisionChannel::ECC_Visibility, FCollisionShape::MakeSphere(TraceRadius), TraceCollisionParams);

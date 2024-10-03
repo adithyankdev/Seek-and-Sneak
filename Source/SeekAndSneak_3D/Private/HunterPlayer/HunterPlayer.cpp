@@ -80,6 +80,11 @@ void AHunterPlayer::BeginPlay()
 
 	PropProximity = NewObject<UPropProximityNotifier>();
 
+	if (IsLocallyControlled())
+	{
+		StartPropProximity();
+	}
+
 }
 
 // Called every frame

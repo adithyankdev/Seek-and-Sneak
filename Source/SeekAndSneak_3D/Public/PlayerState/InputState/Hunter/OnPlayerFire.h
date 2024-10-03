@@ -18,21 +18,17 @@ public:
 
 	void Begin(ACharacter* Player)override;
 	void End(ACharacter* Player)override;
+	void SetLocation(FVector V1, FVector V2)override;
 
 private:
 
-	float FireIntervalTime;
 
 	//Weapon Variables
 	float ShootingRange;
 
 	//Caching Player Weapon Mesh
 	USkeletalMeshComponent* WeaponMeshComp;
-	//Caching Player Interface
-	TScriptInterface<IHunterPlayerInterface>PlayerInterface;
 
-	//Timer For Firing Weapon
-	FTimerHandle FireWeaponTimer;
 
 	UAnimSequence* FireAnimation;
 

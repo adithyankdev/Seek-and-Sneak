@@ -16,7 +16,8 @@ OnPlayerFire::OnPlayerFire()
 	WeaponBulletHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/Asset/Weapons/Rifle/Vfx/RifileShotImpact.RifileShotImpact"));
 
 	ShootingRange = 2000.0f;
-	FireIntervalTime = 0.15f;
+
+	WeaponMeshComp = nullptr;
 }
 
 OnPlayerFire::~OnPlayerFire()
@@ -26,35 +27,33 @@ OnPlayerFire::~OnPlayerFire()
 
 void OnPlayerFire::Begin(ACharacter* Player)
 {
-	if (PlayerInterface == nullptr)
+	if (!WeaponMeshComp)
 	{
 		//Call At Once , So Using This For Store Other Datas
 		if (IHunterPlayerInterface* Interface = Cast <IHunterPlayerInterface>(Player))
 		{
-			PlayerInterface.SetObject(Player);
-			PlayerInterface.SetInterface(Interface);
-
 			WeaponMeshComp = Interface->GetWeaponMeshComp();
 		}
 		TraceCollision.AddIgnoredActor(Player);
 	}
-	Player->GetWorld()->GetTimerManager().SetTimer(FireWeaponTimer, [this,Player]() {WeaponFiring(Player); },FireIntervalTime, true);
+	WeaponFiring(Player);
 
-	
 }
 
 void OnPlayerFire::End(ACharacter* Player)
 {
-	Player->GetWorld()->GetTimerManager().ClearTimer(FireWeaponTimer);
+
+}
+
+void OnPlayerFire::SetLocation(FVector V1, FVector V2)
+{
+	StartPoint = V1;
+	EndPoint = StartPoint + (V2 * ShootingRange);
 }
 
 //Contain Fire Weapon Logic
 void OnPlayerFire::WeaponFiring(ACharacter* Player)
 {
-	if(PlayerInterface)PlayerInterface->SetFireWeaponLoc(StartPoint, ForwardVector);  //Passing Value By On Ref 
-	//Since EndPoint Return  Only Controller Forward Vector
-	EndPoint = StartPoint + (ForwardVector * ShootingRange);
-
 	/*Weapon Animation Added*/
 	if(FireAnimation)WeaponMeshComp->PlayAnimation(FireAnimation, false);
 
@@ -67,5 +66,5 @@ void OnPlayerFire::WeaponFiring(ACharacter* Player)
 	}
 
 	DrawDebugLine(Player->GetWorld(), StartPoint, EndPoint, FColor::Red,false,3);
-	//Niagara Hit Effect Need To Add
+	
 }

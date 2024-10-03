@@ -24,4 +24,7 @@ public:
 
 	virtual void Begin(ACharacter* Player) = 0;
 	virtual void End(ACharacter* Player) = 0;
+
+	//Non Abstract Function For Extra Functionality For Specific Class
+	virtual void SetLocation(FVector V1, FVector V2);
 };

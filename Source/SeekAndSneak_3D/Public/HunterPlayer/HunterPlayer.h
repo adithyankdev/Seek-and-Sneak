@@ -51,9 +51,6 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	APlayerController* PlayerController;
-	
-
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCameraComponent* FPSCamera;
 
@@ -85,15 +82,19 @@ public:
 
 
 //----------------------------------------------------------------------->>>>> Weapon Fire Function
-	FTimerHandle FireWeaponTimer;
+
+	float WeaponFireRate;
+
+	FTimerHandle FiringWeaponTimer;
 
 	void StartFiringWeapon();
+	void OnWeaponFiring();
 	void StopFiringWeapon();
 
 	UFUNCTION(Server,Reliable)
-	void FireWeapon_OnServer(bool Firing);
+	void FireWeapon_OnServer(FVector StartPoint ,FVector EndPoint);
  
 	UFUNCTION(NetMulticast,Reliable)
-	void FireWeapon_OnMulticast(bool Firing);
+	void FireWeapon_OnMulticast(FVector StartPoint, FVector EndPoint);
 //----------------------------------------------------------------------->>>>> Weapon Fire Function
 };

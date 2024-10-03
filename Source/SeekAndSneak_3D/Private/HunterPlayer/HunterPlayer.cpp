@@ -68,6 +68,8 @@ AHunterPlayer::AHunterPlayer()
 
 	MaxBulletCount = 30;
 	WeaponBulletCount = MaxBulletCount;
+
+	WeaponFireRate = 0.15f;
 }
 
 
@@ -78,16 +80,6 @@ void AHunterPlayer::BeginPlay()
 
 	PropProximity = NewObject<UPropProximityNotifier>();
 
-	if (IsLocallyControlled())
-	{
-		StartPropProximity();
-	}
-	PlayerController = Cast <AHunterPlayerController>(GetController());
-
-	if (PlayerController)
-	{
-		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("GoodToGo"));
-	}
 }
 
 // Called every frame
@@ -147,15 +139,20 @@ void AHunterPlayer::Sprint_OnMulticast_Implementation(float WalkSpeed,bool CanSp
 //------------------------------------------------------------------------------------------>>>>> ( Firing Weapon )
 void AHunterPlayer::StartFiringWeapon()
 {
+	GetWorld()->GetTimerManager().SetTimer(FiringWeaponTimer, this, &AHunterPlayer::OnWeaponFiring,WeaponFireRate,true);
+}
+
+void AHunterPlayer::OnWeaponFiring()
+{
 	if (WeaponBulletCount > 0)
 	{
 		if (HasAuthority())
 		{
-			FireWeapon_OnMulticast(true);
+			FireWeapon_OnMulticast(FPSCamera->GetComponentLocation(),FPSCamera->GetForwardVector());
 		}
 		else
 		{
-			FireWeapon_OnServer(true);
+			FireWeapon_OnServer(FPSCamera->GetComponentLocation(), FPSCamera->GetForwardVector());
 		}
 		WeaponBulletCount--;
 	}
@@ -164,22 +161,16 @@ void AHunterPlayer::StartFiringWeapon()
 
 void AHunterPlayer::StopFiringWeapon()
 {
-	if (HasAuthority())
-	{
-		FireWeapon_OnMulticast(false);
-	}
-	else
-	{
-		FireWeapon_OnServer(false);
-	}
+	GetWorld()->GetTimerManager().ClearTimer(FiringWeaponTimer);
 	
 }
-void AHunterPlayer::FireWeapon_OnServer_Implementation(bool Firing)
+void AHunterPlayer::FireWeapon_OnServer_Implementation(FVector StartPoint, FVector EndPoint)
 {
-	FireWeapon_OnMulticast(Firing);
+	FireWeapon_OnMulticast(StartPoint,EndPoint);
 }
-void AHunterPlayer::FireWeapon_OnMulticast_Implementation(bool Firing)
+void AHunterPlayer::FireWeapon_OnMulticast_Implementation(FVector StartPoint, FVector EndPoint)
 {	
-	if (Firing) InputStateLibrary[InputStateEnum::OnHunterFire]->Begin(this);
-	else InputStateLibrary[InputStateEnum::OnHunterFire]->End(this);
+	
+	InputStateLibrary[InputStateEnum::OnHunterFire]->SetLocation(StartPoint, EndPoint);
+	InputStateLibrary[InputStateEnum::OnHunterFire]->Begin(this);
 }

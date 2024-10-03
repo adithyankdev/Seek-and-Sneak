@@ -52,6 +52,7 @@ void OnPropMorph::CastLineTrace(ACharacter* Player)
 	EndPoint = StartPoint;
 
 	IsTraceHit = Player->GetWorld()->SweepSingleByChannel(TraceHitResult, StartPoint, EndPoint, FQuat::Identity, ECollisionChannel::ECC_Visibility, FCollisionShape::MakeSphere(TraceRadius), TraceCollisionParams);
+	
 	DrawDebugSphere(Player->GetWorld(), EndPoint, TraceRadius, 12, IsTraceHit ? FColor::Red : FColor::Green, false, 5);
 
 	if (IsTraceHit && TraceHitResult.GetActor()->IsA(AStaticMeshActor::StaticClass()))

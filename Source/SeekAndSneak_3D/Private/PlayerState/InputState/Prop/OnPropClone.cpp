@@ -27,7 +27,11 @@ void OnPropClone::Begin(ACharacter* Player)
     Location = Player->GetActorLocation();
 	//Don't Know Why But When Mesh Is Spawnd , It Always Spawn Higher Than PropPlayer In Z 
 	Location.Z -= 30.0f;
+
+	SpawnTransform.SetRotation(Player->GetActorRotation().Quaternion());
+
 	SpawnTransform.SetLocation(Location);
+
 	ClonedActor = Player->GetWorld()->SpawnActor<APropCloneActor>(CloneActorClass, SpawnTransform);
 	if (ClonedActor)
 	{

@@ -2,6 +2,7 @@
 
 
 #include "PropPlayer/PropPlayer.h"
+#include "Components/CapsuleComponent.h"
 
 #include "PlayerState/MotionState/PlayerMove/PlayerMove.h"
 #include "PlayerState/MotionState/PlayerLook/PlayerLook.h"
@@ -21,6 +22,12 @@ void APropPlayer::SetPlayerMesh(UStaticMesh* NewMesh)
 UStaticMesh* APropPlayer::GetPlayerMesh()
 {
 	return PlayerMesh->GetStaticMesh();
+}
+//Re sizing The Prop Collsion Component
+void APropPlayer::SetCapsuleSize(float Radius, float Height)
+{
+	GetCapsuleComponent()->SetCapsuleRadius(Radius);
+	GetCapsuleComponent()->SetCapsuleHalfHeight(Height);
 }
 
 // Sets default values

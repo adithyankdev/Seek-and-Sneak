@@ -20,6 +20,8 @@ public:
 
 private:
 
+	FBoxSphereBounds MeshBounds;
+
 	//Caching The Interface
 	TScriptInterface<IPropPlayerInterface>PlayerInterface;
 

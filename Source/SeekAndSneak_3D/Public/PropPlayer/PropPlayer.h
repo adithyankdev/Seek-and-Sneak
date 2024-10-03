@@ -26,6 +26,7 @@ public:
 
 	void SetPlayerMesh(UStaticMesh* NewMesh) override; 
 	UStaticMesh* GetPlayerMesh() override;
+	void SetCapsuleSize(float Radius, float Height) override;
 
 private:
 
@@ -38,10 +39,10 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly)
 	USpringArmComponent* CameraBoom;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly)
 	UCameraComponent* TPSCamera;
 
 	UPROPERTY(EditDefaultsOnly)

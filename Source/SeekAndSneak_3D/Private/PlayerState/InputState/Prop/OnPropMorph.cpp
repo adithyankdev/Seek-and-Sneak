@@ -69,6 +69,12 @@ void OnPropMorph::SetNewMesh(ACharacter* Player, FHitResult& HitResult)
 		if (StaticMeshComponent->ComponentHasTag("Sample"))
 		{
 			PlayerInterface->SetPlayerMesh(StaticMeshComponent->GetStaticMesh());
+			
+			//Getting The Collision Bounds And Setting To Prop Collision
+			MeshBounds = StaticMeshComponent->GetStaticMesh()->GetBounds();
+			float CapsuleRadius = MeshBounds.BoxExtent.X;
+			float CapsuleHeight = MeshBounds.BoxExtent.Z;
+			PlayerInterface->SetCapsuleSize(CapsuleRadius, CapsuleHeight);
 		}
 		
 	}

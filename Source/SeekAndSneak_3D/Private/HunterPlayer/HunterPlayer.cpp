@@ -67,9 +67,6 @@ AHunterPlayer::AHunterPlayer()
 
 	InputStateLibrary.Add(InputStateEnum::OnHunterFire, MakeUnique<OnPlayerFire>());
 
-	MaxBulletCount = 30;
-	WeaponBulletCount = MaxBulletCount;
-
 	WeaponFireRate = 0.15f;
 }
 
@@ -115,11 +112,13 @@ void AHunterPlayer::LookFunction(const FInputActionValue& InputValue)
 
 void AHunterPlayer::StartJumpFunction()
 {
+	IsJumping = true;
 	Jump();
 }
 
 void AHunterPlayer::StopJumpFunction()
 {
+	IsJumping = false;
 	StopJumping();
 }
 
@@ -155,22 +154,25 @@ void AHunterPlayer::Sprint_OnMulticast_Implementation(float WalkSpeed,bool CanSp
 //------------------------------------------------------------------------------------------>>>>> ( Firing Weapon )
 void AHunterPlayer::StartFiringWeapon()
 {
-	GetWorld()->GetTimerManager().SetTimer(FiringWeaponTimer, this, &AHunterPlayer::OnWeaponFiring,WeaponFireRate,true);
+	if (!IsPlayerRunning && !IsJumping)
+	{
+		GetWorld()->GetTimerManager().SetTimer(FiringWeaponTimer, this, &AHunterPlayer::OnWeaponFiring, WeaponFireRate, true);
+	}
+	
 }
 
 void AHunterPlayer::OnWeaponFiring()
 {
-	if (WeaponBulletCount > 0)
+	if (!IsPlayerRunning && !IsJumping)
 	{
 		if (HasAuthority())
 		{
-			FireWeapon_OnMulticast(FPSCamera->GetComponentLocation(),FPSCamera->GetForwardVector());
+			FireWeapon_OnMulticast(FPSCamera->GetComponentLocation(), FPSCamera->GetForwardVector());
 		}
 		else
 		{
 			FireWeapon_OnServer(FPSCamera->GetComponentLocation(), FPSCamera->GetForwardVector());
 		}
-		WeaponBulletCount--;
 	}
 }
 

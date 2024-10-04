@@ -44,8 +44,8 @@ private:
 	bool bProximityChangeOccur;
 
 	//Proxmity Range 
-	const float Hot = 900.0f;
-	const float Warm = 1900.0f;
+	const float Hot = 1200.0f;
+	const float Warm = 2100.0f;
 	const float Tolarance = 2.0f;
 
 
@@ -56,7 +56,7 @@ private:
 
 	//Trace Variables
 	bool bIsHit;
-	const float Radius = 2900.0f;
+	const float Radius = 3000.0f;
 	FHitResult HitResult;
 	FVector StartPoint;
 	FVector EndPoint;

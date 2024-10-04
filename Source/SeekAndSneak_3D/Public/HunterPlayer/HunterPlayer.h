@@ -41,9 +41,6 @@ private:
 	UPROPERTY()
 	UPropProximityNotifier* PropProximity;
 
-	float WeaponBulletCount;
-	float MaxBulletCount;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -64,6 +61,8 @@ public:
 	//Movement Function
 	void PlayerJogFunction(const FInputActionValue& InputValue);
 	void LookFunction(const FInputActionValue& InputValue);
+
+	bool IsJumping;
 
 	void StartJumpFunction();
 	void StopJumpFunction();

@@ -10,3 +10,8 @@ InputStateAbstract::InputStateAbstract()
 InputStateAbstract::~InputStateAbstract()
 {
 }
+
+void InputStateAbstract::SetLocation(FVector V1, FVector V2)
+{
+  
+}

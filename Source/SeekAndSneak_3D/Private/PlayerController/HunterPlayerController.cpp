@@ -26,8 +26,14 @@ void AHunterPlayerController::BeginPlay()
 		  if (AHunterPlayer* HunterPlayer = Cast<AHunterPlayer>(GetPawn()))
 		  {
 			//Binding InputAction And The Correspoding Functions
-			EnhancedInput->BindAction(MoveAction, ETriggerEvent::Triggered, HunterPlayer, &AHunterPlayer::MoveFunction);
+			EnhancedInput->BindAction(JogAction, ETriggerEvent::Triggered, HunterPlayer, &AHunterPlayer::PlayerJogFunction);
 			EnhancedInput->BindAction(LookAction, ETriggerEvent::Triggered, HunterPlayer, &AHunterPlayer::LookFunction);
+
+			EnhancedInput->BindAction(SprintAction, ETriggerEvent::Triggered, HunterPlayer, &AHunterPlayer::StartSprintFunction);
+			EnhancedInput->BindAction(SprintAction, ETriggerEvent::Completed, HunterPlayer, &AHunterPlayer::StopSprintFunction);
+
+			EnhancedInput->BindAction(FireWeaponAction, ETriggerEvent::Started, HunterPlayer, &AHunterPlayer::StartFiringWeapon);
+			EnhancedInput->BindAction(FireWeaponAction, ETriggerEvent::Completed, HunterPlayer, &AHunterPlayer::StopFiringWeapon);
 
 		  }
 	   }

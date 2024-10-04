@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "PlayerState/InputState/InputStateAbstract.h"
 #include "Interface/Player/PropPlayerInterface.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraSystem.h"
 
 /**
  * 
@@ -19,6 +21,9 @@ public:
 	void End(ACharacter* Player)override;
 
 private:
+
+	UNiagaraSystem* NiagaraSystemOnMorph;
+	FVector SystemLocation;
 
 	FBoxSphereBounds MeshBounds;
 

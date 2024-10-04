@@ -12,10 +12,13 @@
 OnPropMorph::OnPropMorph()
 {
 	TraceRadius = 150.0f;
+
+	NiagaraSystemOnMorph = LoadObject<UNiagaraSystem>(nullptr, TEXT("/Game/NiagraParticle/NS_PoofSmoke.NS_PoofSmoke"));
 }
 
 OnPropMorph::~OnPropMorph()
 {
+	PlayerInterface = nullptr;;
 }
 
 void OnPropMorph::Begin(ACharacter* Player)
@@ -34,6 +37,9 @@ void OnPropMorph::Begin(ACharacter* Player)
 		
 	}
 	CastLineTrace(Player);
+
+	if (NiagaraSystemOnMorph)UKismetSystemLibrary::PrintString(Player->GetWorld(), TEXT("TRue"));
+	else UKismetSystemLibrary::PrintString(Player->GetWorld(), TEXT("FAlses"), true, true, FLinearColor::Red);
 	
 }
 
@@ -70,6 +76,11 @@ void OnPropMorph::SetNewMesh(ACharacter* Player, FHitResult& HitResult)
 		{
 			PlayerInterface->SetPlayerMesh(StaticMeshComponent->GetStaticMesh());
 			
+			SystemLocation = Player->GetActorLocation();
+
+			if(NiagaraSystemOnMorph)UNiagaraFunctionLibrary::SpawnSystemAtLocation(Player->GetWorld(), NiagaraSystemOnMorph, SystemLocation,
+				FRotator(0.0f), FVector(1.0f), true, true, ENCPoolMethod::AutoRelease);
+
 			//Getting The Collision Bounds And Setting To Prop Collision
 			MeshBounds = StaticMeshComponent->GetStaticMesh()->GetBounds();
 			float CapsuleRadius = MeshBounds.BoxExtent.X;

@@ -13,6 +13,8 @@
 
 #include "Interface/Player/PropPlayerInterface.h"
 
+#include "NiagaraSystem.h"
+
 #include "PropPlayer.generated.h"
 
 UCLASS()
@@ -55,6 +57,7 @@ public:
 	//Movement Function
 	void MoveFunction(const FInputActionValue& InputValue);
 	void LookFunction(const FInputActionValue& InputValue);
+
 	void StartJumpFunction();
 	void StopJumpFunction();
 
@@ -91,6 +94,19 @@ public:
 	UFUNCTION(NetMulticast,Reliable)
 	void PropClone_Multicast();
 
+//-------------------------------------------------------->>>>> Clone PropMesh
+
+//--------------------------------------------------------->>>>> Smoke Bomb
+
+	UNiagaraSystem* SmokeBombParticle;
+
+	void SmokeBombFunction();
+
+	UFUNCTION(Server , Reliable)
+	void SmokeBombOnServer();
+
+	UFUNCTION(NetMulticast , Reliable)
+	void SmokeBombOnMulticast();
 
 
 };

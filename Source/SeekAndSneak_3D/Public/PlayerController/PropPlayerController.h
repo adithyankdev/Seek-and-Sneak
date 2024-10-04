@@ -39,5 +39,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	UInputAction* CloneAction;
+
+	UPROPERTY(EditDefaultsOnly)
+	UInputAction* SmokeBombAction;
 	
 };

@@ -13,6 +13,9 @@
 #include "Runtime/Engine/Public/TimerManager.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+#include "NiagaraFunctionLibrary.h"
+
+
 void APropPlayer::SetPlayerMesh(UStaticMesh* NewMesh)
 {
 	PlayerMesh->SetStaticMesh(NewMesh);
@@ -51,6 +54,12 @@ APropPlayer::APropPlayer()
 	InputStateLibrary.Add(InputStateEnum::OnPropMorph,MakeUnique<OnPropMorph>());
 	InputStateLibrary.Add(InputStateEnum::OnPropClone, MakeUnique<OnPropClone>());
 
+	MorphMaxCoolDownTime = 15.0f;
+	TotalCloneCount = 5.0f;
+
+	//Load The Bomb Particle
+	SmokeBombParticle = LoadObject<UNiagaraSystem>(nullptr, TEXT("/Game/NiagraParticle/NS_SmokeBomb.NS_SmokeBomb"));
+
 }
 
 
@@ -59,8 +68,10 @@ void APropPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	MorphMaxCoolDownTime = 15.0f;
-	TotalCloneCount = 5.0f;
+	if (SmokeBombParticle)UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Good"));
+	else UKismetSystemLibrary::PrintString(GetWorld(), TEXT("H"), true, true, FLinearColor::Red);
+
+
 }
 
 // Called every frame
@@ -153,4 +164,29 @@ void APropPlayer::PropClone_Multicast_Implementation()
 {
 	InputStateLibrary[InputStateEnum::OnPropClone]->Begin(this);
 }
-//---------------------------------------------------------------------------------------------->>>>>
+//---------------------------------------------------------------------------------------------->>>>> ( Prop Clone Function )
+
+//---------------------------------------------------------------------------------------------->>>>> ( Prop Smoke Bomb )
+
+void APropPlayer::SmokeBombFunction()
+{
+	if (HasAuthority())
+	{
+		SmokeBombOnMulticast();
+	}
+	else
+	{
+		SmokeBombOnServer();
+	}
+}
+
+void APropPlayer::SmokeBombOnServer_Implementation()
+{
+	SmokeBombOnMulticast();
+}
+
+void APropPlayer::SmokeBombOnMulticast_Implementation()
+{
+	if (SmokeBombParticle)UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), SmokeBombParticle, GetActorLocation(), 
+		                  FRotator(0.0f), FVector(1.0f), true, true, ENCPoolMethod::AutoRelease);
+}

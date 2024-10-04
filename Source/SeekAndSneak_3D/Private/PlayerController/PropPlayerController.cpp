@@ -34,6 +34,8 @@ void APropPlayerController::BeginPlay()
 
 				EnhancedInput->BindAction(CloneAction, ETriggerEvent::Started, PropPlayer, &APropPlayer::PropCloneFunction);
 
+				EnhancedInput->BindAction(SmokeBombAction, ETriggerEvent::Started, PropPlayer, &APropPlayer::SmokeBombFunction);
+
 			}
 		}
 	}

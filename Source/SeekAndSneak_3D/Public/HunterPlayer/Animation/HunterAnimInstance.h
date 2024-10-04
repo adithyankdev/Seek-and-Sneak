@@ -35,8 +35,10 @@ protected:
 	float Pitch;
 
 	UPROPERTY(BlueprintReadOnly)
-	bool CanPlayerRun;
+	bool IsPlayerRun;
 
+	UPROPERTY(BlueprintReadOnly)
 	FVector Velocity;
+
 	FRotator AimRotation;
 };

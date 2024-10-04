@@ -35,7 +35,7 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaTime)
 			Pitch = AimRotation.Pitch * -1;
 		}
 
-		CanPlayerRun = PlayerInterface->CanRun();
+		IsPlayerRun = PlayerInterface->CanRun();
 	}
 
 }

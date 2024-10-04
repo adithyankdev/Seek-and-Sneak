@@ -34,6 +34,9 @@ protected:
 	UInputAction* LookAction;
 
 	UPROPERTY(EditDefaultsOnly)
+	UInputAction* JumpAction;
+
+	UPROPERTY(EditDefaultsOnly)
 	UInputAction* SprintAction;
 
 	UPROPERTY(EditDefaultsOnly)

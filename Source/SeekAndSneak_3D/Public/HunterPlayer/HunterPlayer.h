@@ -41,9 +41,6 @@ private:
 	UPROPERTY()
 	UPropProximityNotifier* PropProximity;
 
-	UPROPERTY(Replicated);
-	bool IsPlayerRunning;
-
 	float WeaponBulletCount;
 	float MaxBulletCount;
 
@@ -68,8 +65,13 @@ public:
 	void PlayerJogFunction(const FInputActionValue& InputValue);
 	void LookFunction(const FInputActionValue& InputValue);
 
-
+	void StartJumpFunction();
+	void StopJumpFunction();
 //----------------------------------------------------------------------->>>>> Sprint Function
+     
+	UPROPERTY(Replicated);
+	bool IsPlayerRunning;   //This variable Will Be Used For Set  Animation On Spriting And For Stop Weapon Firing On Sprinting
+
 	void StartSprintFunction();
 	void StopSprintFunction();
 

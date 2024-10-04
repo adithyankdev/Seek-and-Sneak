@@ -45,6 +45,7 @@ void AHunterPlayer::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLif
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AHunterPlayer, IsPlayerRunning);
+	
 }
 
 // Sets default values
@@ -110,6 +111,16 @@ void AHunterPlayer::PlayerJogFunction(const FInputActionValue& InputValue)
 void AHunterPlayer::LookFunction(const FInputActionValue& InputValue)
 {
 	MotionStateLibrary[MotionEnum::OnLook]->Begin(this, InputValue);
+}
+
+void AHunterPlayer::StartJumpFunction()
+{
+	Jump();
+}
+
+void AHunterPlayer::StopJumpFunction()
+{
+	StopJumping();
 }
 
 //---------------------------------------------------------------------------------------->>>>>> ( Sprint Function )

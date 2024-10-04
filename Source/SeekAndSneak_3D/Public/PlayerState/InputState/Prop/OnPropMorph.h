@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "PlayerState/InputState/InputStateAbstract.h"
+#include "Interface/Player/PropPlayerInterface.h"
 
 /**
  * 
@@ -16,4 +17,27 @@ public:
 
 	void Begin(ACharacter* Player)override;
 	void End(ACharacter* Player)override;
+
+private:
+
+	FBoxSphereBounds MeshBounds;
+
+	//Caching The Interface
+	TScriptInterface<IPropPlayerInterface>PlayerInterface;
+
+	//Trace Variables
+	bool IsTraceHit;
+	float TraceRadius;
+	FVector StartPoint;
+	FVector EndPoint;
+	FHitResult TraceHitResult;
+	FCollisionQueryParams TraceCollisionParams;
+
+	//Helper Function For Breaking Down The Code
+
+	/*Casting Line Trace*/
+	void CastLineTrace(ACharacter* Player);
+	/*Setting New Mesh To Player*/
+	void SetNewMesh(ACharacter* Player , FHitResult& HitResult);
+
 };

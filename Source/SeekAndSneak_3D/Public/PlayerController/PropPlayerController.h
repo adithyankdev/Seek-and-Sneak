@@ -30,5 +30,14 @@ protected:
 	//InputAction For Look Movement --MouseXY
 	UPROPERTY(EditDefaultsOnly)
 	UInputAction* LookAction;
+
+	UPROPERTY(EditDefaultsOnly)
+	UInputAction* JumpAction;
+
+	UPROPERTY(EditDefaultsOnly)
+	UInputAction* MorphAction;
+
+	UPROPERTY(EditDefaultsOnly)
+	UInputAction* CloneAction;
 	
 };

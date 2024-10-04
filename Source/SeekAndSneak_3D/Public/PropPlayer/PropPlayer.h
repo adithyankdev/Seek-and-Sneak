@@ -24,7 +24,9 @@ public:
 	// Sets default values for this character's properties
 	APropPlayer();
 
-	UStaticMeshComponent* GetPlayerMesh() override;
+	void SetPlayerMesh(UStaticMesh* NewMesh) override; 
+	UStaticMesh* GetPlayerMesh() override;
+	void SetCapsuleSize(float Radius, float Height) override;
 
 private:
 
@@ -37,11 +39,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly)
 	USpringArmComponent* CameraBoom;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly)
 	UCameraComponent* TPSCamera;
+
+	UPROPERTY(EditDefaultsOnly)
+	UStaticMeshComponent* PlayerMesh;
 
 public:	
 	// Called every frame
@@ -50,6 +55,42 @@ public:
 	//Movement Function
 	void MoveFunction(const FInputActionValue& InputValue);
 	void LookFunction(const FInputActionValue& InputValue);
+	void StartJumpFunction();
+	void StopJumpFunction();
+
+
+//------------------------------------------------------>>>>> PropMorph 
+	FTimerHandle MorphCoolDownTimer;
+
+	float MorphCoolDownTime;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Prop Player")
+	float MorphMaxCoolDownTime;
+
+	void MorphObjectFunction();
+	void UpdateMorphCoolDownTime();     /*For Counting The CoolDown Timer*/
+
+	UFUNCTION(Server,Reliable)
+	void MorphObject_Server();
+
+	UFUNCTION(NetMulticast,Reliable)
+	void MorphObject_Multicast();
+//------------------------------------------------------->>>>>
+
+//------------------------------------------------------->>>>> Clone PropMesh
+
+	UPROPERTY(EditDefaultsOnly)
+	float TotalCloneCount;
+	float ClonedCount;
+
+	void PropCloneFunction();
+
+	UFUNCTION(Server,Reliable)
+	void PropClone_Server();
+
+	UFUNCTION(NetMulticast,Reliable)
+	void PropClone_Multicast();
+
 
 
 };
